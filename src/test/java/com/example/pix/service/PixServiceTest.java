@@ -33,6 +33,17 @@ class PixServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    
+    @Test
+    void givenExistingId_whenGetById_thenShouldReturnPixPayment() {
+        PixPayment existing = new PixPayment("id-999", "payer-a", "receiver-b", new BigDecimal("50.00"));
+        when(repo.findById("id-999")).thenReturn(Optional.of(existing));
+        PixPayment result = service.getById("id-999");
+        assertEquals("id-999", result.getId());
+        assertEquals("payer-a", result.getPayer());
+        assertEquals("receiver-b", result.getReceiver());
+        assertEquals(new BigDecimal("50.00"), result.getAmount());
+    }
 
     @Test
     void shouldCreatePixPayment() {
