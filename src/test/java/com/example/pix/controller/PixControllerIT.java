@@ -42,4 +42,10 @@ class PixControllerIT {
                 .andExpect(jsonPath("$.amount").value(10.00));
     }
     
+    @Test
+    void shouldReturn404_whenNotFound() throws Exception {
+        mvc.perform(get("/api/pix/{id}", "missing-id"))
+                .andExpect(status().isNotFound());
+    }
+    
 }
