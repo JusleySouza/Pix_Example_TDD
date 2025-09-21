@@ -76,4 +76,10 @@ class PixServiceTest {
         assertThrows(IllegalArgumentException.class, () -> service.create(input));
     }
     
+    @Test
+    void givenNullAmount_whenCreate_thenShouldThrowIllegalArgument() {
+        PixPayment input = new PixPayment(null, "payer-n", "receiver-m", null);
+        assertThrows(IllegalArgumentException.class, () -> service.create(input));
+    }
+    
 }
