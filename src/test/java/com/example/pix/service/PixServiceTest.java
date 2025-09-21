@@ -54,4 +54,10 @@ class PixServiceTest {
         assertThrows(NotFoundException.class, () -> service.getById("nope"));
     }
     
+    @Test
+    void shouldNotAllowNegativeAmount() {
+        PixPayment input = new PixPayment(null, "payer-x", "receiver-y", new BigDecimal("-1.00"));
+        assertThrows(IllegalArgumentException.class, () -> service.create(input));
+    }
+    
 }
