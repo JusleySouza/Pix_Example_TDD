@@ -12,7 +12,7 @@
 	<groupId>com.example.pix</groupId>
 	<artifactId>pix_example_tdd</artifactId>
 	<version>1.0.0</version>
-	<name>pix_example_tdd</name>
+	<name>pix_example</name>
 	<description>Pix transaction example project, following Test Driven Development practices.
 	</description>
 	<properties>
