@@ -48,4 +48,15 @@ class PixControllerIT {
                 .andExpect(status().isNotFound());
     }
     
+    @Test
+    void shouldReturn400_whenInvalidRequest() throws Exception {
+        PixRequest req = new PixRequest("", "", new BigDecimal("-10.00"));
+        String payload = mapper.writeValueAsString(req);
+
+        mvc.perform(post("/api/pix")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isBadRequest());
+    }
+    
 }
