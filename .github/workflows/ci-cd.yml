@@ -47,6 +47,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set image repository (lowercase)
+        id: repo
+        run: echo "IMAGE_REPO=ghcr.io/$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')/pix-example-tdd" >> $GITHUB_ENV
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -60,8 +64,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/pix-example-tdd:latest
-            ghcr.io/${{ github.repository_owner }}/pix-example-tdd:${{ github.sha }}
+            ${{ env.IMAGE_REPO }}:latest
+            ${{ env.IMAGE_REPO }}:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
 
   optional-dockerhub-publish:
