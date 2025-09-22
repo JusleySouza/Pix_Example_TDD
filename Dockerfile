@@ -7,7 +7,7 @@ RUN mvn -B -DskipTests dependency:go-offline
 COPY src ./src
 RUN mvn -B package -DskipTests
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre
 ARG JAR_FILE=target/*.jar
 WORKDIR /app
 COPY --from=build /workspace/app/target/pix_example_tdd-1.0.0.jar app.jar
