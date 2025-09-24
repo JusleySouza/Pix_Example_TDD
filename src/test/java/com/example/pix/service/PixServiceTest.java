@@ -40,12 +40,14 @@ class PixServiceTest {
 
     private PixRequest validRequest;
     private PixPayment paymentEntity;
+    private UUID id;
 
     @BeforeEach
     void setUp() {
+    	id = UUID.randomUUID();
         MockitoAnnotations.openMocks(this);
         validRequest = new PixRequest("payer-1", "receiver-1", new BigDecimal("100.00"), "Pagamento de teste");
-        paymentEntity = new PixPayment(null,"payer-1", "receiver-1", new BigDecimal("100.00"), "Pagamento de teste", null, null);
+        paymentEntity = new PixPayment(id, "payer-1", "receiver-1", new BigDecimal("100.00"), "Pagamento de teste", "PROCESSING", LocalDateTime.now());
     }
     
     @Test
