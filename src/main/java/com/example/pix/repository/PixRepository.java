@@ -9,19 +9,22 @@ import org.springframework.stereotype.Repository;
 
 import com.example.pix.model.PixPayment;
 
+import lombok.Generated;
+
 @Repository
+@Generated
 public class PixRepository {
-    private final Map<String, PixPayment> store = new ConcurrentHashMap<>();
+    private final Map<UUID, PixPayment> store = new ConcurrentHashMap<>();
 
     public PixPayment save(PixPayment pix) {
         if (pix.getId() == null) {
-            pix.setId(UUID.randomUUID().toString());
+            pix.setId(UUID.randomUUID());
         }
         store.put(pix.getId(), pix);
         return pix;
     }
 
-    public Optional<PixPayment> findById(String id) {
+    public Optional<PixPayment> findById(UUID id) {
         return Optional.ofNullable(store.get(id));
     }
     
