@@ -1,6 +1,8 @@
 package com.example.pix.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Generated;
@@ -17,9 +19,12 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PixPayment {
 	
-    private String id;
+    private UUID id;
     private String payer;
     private String receiver;
     private BigDecimal amount;
+    private String description;
+    private String status;
+    private LocalDateTime createdAt;
 
 }
