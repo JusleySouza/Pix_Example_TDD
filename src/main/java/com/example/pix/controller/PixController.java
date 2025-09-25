@@ -2,7 +2,6 @@ package com.example.pix.controller;
 
 import com.example.pix.dto.PixRequest;
 import com.example.pix.dto.PixResponse;
-import com.example.pix.mapper.PixMapper;
 import com.example.pix.model.PixPayment;
 import com.example.pix.service.PixService;
 import jakarta.validation.Valid;
@@ -21,26 +20,26 @@ import java.util.UUID;
 public class PixController {
 
     private final PixService service;
-    private final PixMapper mapper;
 
-    public PixController(PixService service, PixMapper mapper) {
+    public PixController(PixService service) {
         this.service = service;
-		this.mapper = mapper;
     }
 
     @PostMapping
     @Operation(summary = "Criar pagamento Pix", description = "Cria um pagamento Pix e retorna a URI de localização no header")
     public ResponseEntity<Void> create(@Valid @RequestBody PixRequest request, UriComponentsBuilder uriBuilder) {
-    	PixPayment createdPix = service.create(request);
-        URI location = uriBuilder.path("/api/pix/{id}").buildAndExpand(createdPix.getId()).toUri();
+        URI location = buildLocation(service.create(request), uriBuilder);
         return ResponseEntity.created(location).build();
     }
     
     @GetMapping("/{id}")
     @Operation(summary = "Buscar pagamento Pix por ID", description = "Retorna detalhes de uma transação Pix")
     public ResponseEntity<PixResponse> getById(@PathVariable UUID id) {
-        PixPayment pix = service.getById(id);
-        PixResponse response = mapper.toResponse(pix);
-        return ResponseEntity.ok(response);   
+        return ResponseEntity.ok(service.getById(id));   
     }
+    
+    private URI buildLocation(PixPayment pix, UriComponentsBuilder uriBuilder) {
+		return uriBuilder.path("/api/pix/{id}").buildAndExpand(pix.getId()).toUri();	
+    }
+    
 }
