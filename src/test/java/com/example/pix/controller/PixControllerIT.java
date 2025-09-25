@@ -73,7 +73,7 @@ class PixControllerIT {
         LocalDateTime now = LocalDateTime.of(2025, 9, 23, 17, 50, 0);
         PixPayment payment = new PixPayment(id, "payer-abc", "receiver-def", new BigDecimal("200.00"), "Consulta", "COMPLETED", now);
         PixResponse response = new PixResponse(id, "payer-abc", "receiver-def", new BigDecimal("200.00"), "Consulta", "COMPLETED", now);
-        when(service.getById(id)).thenReturn(payment);
+        when(service.getById(id)).thenReturn(response);
         when(mapper.toResponse(payment)).thenReturn(response);
         mockMvc.perform(get("/api/pix/{id}", id))
             .andExpect(status().isOk())
