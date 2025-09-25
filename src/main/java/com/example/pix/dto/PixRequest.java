@@ -38,5 +38,10 @@ public class PixRequest {
     
     @Schema(description = "Descrição da transação", type = "String", example = "Pagamento de serviços")
     private String description;
+    
+    
+    public boolean amountIsValid() {
+		return this.amount != null && this.amount.compareTo(BigDecimal.ZERO) > 0;	
+    }
 
 }
