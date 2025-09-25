@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.example.pix.dto.PixRequest;
+import com.example.pix.dto.PixResponse;
 import com.example.pix.exception.NotFoundException;
 import com.example.pix.mapper.PixMapper;
 import com.example.pix.enuns.PaymentStatus;
@@ -80,9 +81,10 @@ class PixServiceTest {
     void givenExistingId_whenGetById_thenShouldReturnPixPayment() {
     	 UUID existingId = UUID.randomUUID();
          PixPayment existing = new PixPayment(existingId, "payer-a", "receiver-b", new BigDecimal("100.00"), "Pagamento existente", "COMPLETED", LocalDateTime.now());
+         PixResponse response = new PixResponse(existingId, "payer-a", "receiver-b", new BigDecimal("100.00"), "Pagamento existente", "COMPLETED", LocalDateTime.now());
          when(repo.findById(existingId)).thenReturn(Optional.of(existing));
-        
-         PixPayment result = service.getById(existingId);
+         when(mapper.toResponse(any(PixPayment.class))).thenReturn(response);
+         PixResponse result = service.getById(existingId);
         
         assertEquals(existingId, result.getId());
         assertEquals("payer-a", result.getPayer());
