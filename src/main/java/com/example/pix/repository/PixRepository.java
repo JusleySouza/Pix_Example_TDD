@@ -17,9 +17,6 @@ public class PixRepository {
     private final Map<UUID, PixPayment> store = new ConcurrentHashMap<>();
 
     public PixPayment save(PixPayment pix) {
-        if (pix.getId() == null) {
-            pix.setId(UUID.randomUUID());
-        }
         store.put(pix.getId(), pix);
         return pix;
     }
