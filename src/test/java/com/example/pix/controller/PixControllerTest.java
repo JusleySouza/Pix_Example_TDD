@@ -28,7 +28,7 @@ import com.example.pix.service.PixService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(PixController.class)
-class PixControllerIT {
+class PixControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
