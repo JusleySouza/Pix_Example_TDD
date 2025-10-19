@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.example.pix.dto.PixRequest;
 import com.example.pix.dto.PixResponse;
-import com.example.pix.exception.NotFoundException;
+import com.example.pix.exception.ResourceNotFoundException;
 import com.example.pix.mapper.PixMapper;
 import com.example.pix.enuns.PaymentStatus;
 import com.example.pix.model.PixPayment;
@@ -99,7 +99,7 @@ class PixServiceTest {
     void givenNonExistingId_whenGetById_shouldThrowNotFoundException() {
         UUID nonExistingId = UUID.randomUUID();
         when(repo.findById(nonExistingId)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> service.getById(nonExistingId));
+        assertThrows(ResourceNotFoundException.class, () -> service.getById(nonExistingId));
     }
 
     @Test
