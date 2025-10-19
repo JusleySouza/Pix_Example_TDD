@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "pix_payments")
