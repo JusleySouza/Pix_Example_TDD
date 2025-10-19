@@ -5,6 +5,7 @@ import com.example.pix.dto.PixResponse;
 import com.example.pix.model.PixPayment;
 import com.example.pix.service.PixService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,20 +27,15 @@ public class PixController {
     }
 
     @PostMapping
-    @Operation(summary = "Criar pagamento Pix", description = "Cria um pagamento Pix e retorna a URI de localização no header")
-    public ResponseEntity<Void> create(@Valid @RequestBody PixRequest request, UriComponentsBuilder uriBuilder) {
-        URI location = buildLocation(service.create(request), uriBuilder);
-        return ResponseEntity.created(location).build();
+    @Operation(summary = "Criar pagamento Pix", description = "Cria um pagamento Pix com os detalhes fornecidos")
+    public ResponseEntity<Object> create(@Valid @RequestBody PixRequest request) {
+        return new ResponseEntity<>(service.create(request), HttpStatus.CREATED);
     }
     
     @GetMapping("/{id}")
     @Operation(summary = "Buscar pagamento Pix por ID", description = "Retorna detalhes de uma transação Pix")
     public ResponseEntity<PixResponse> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(service.getById(id));   
-    }
-    
-    private URI buildLocation(PixPayment pix, UriComponentsBuilder uriBuilder) {
-		return uriBuilder.path("/api/pix/{id}").buildAndExpand(pix.getId()).toUri();	
     }
     
 }
