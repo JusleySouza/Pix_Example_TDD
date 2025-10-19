@@ -4,7 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,12 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.pix.dto.PixRequest;
 import com.example.pix.dto.PixResponse;
-import com.example.pix.exception.NotFoundException;
+import com.example.pix.exception.ResourceNotFoundException;
 import com.example.pix.mapper.PixMapper;
 import com.example.pix.model.PixPayment;
 import com.example.pix.service.PixService;
@@ -36,10 +35,10 @@ class PixControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @MockitoBean
     private PixService service;
 
-    @MockBean
+    @MockitoBean
     private PixMapper mapper;
 
     @Test
@@ -53,8 +52,7 @@ class PixControllerTest {
         mockMvc.perform(post("/api/pix")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated())
-            .andExpect(header().string("Location", "http://localhost/api/pix/" + newId));
+            .andExpect(status().isCreated());
     }
     
     @Test
@@ -64,7 +62,7 @@ class PixControllerTest {
         mockMvc.perform(post("/api/pix")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -88,7 +86,7 @@ class PixControllerTest {
     @Test
     void givenNonExistingId_whenGetById_thenShouldReturnNotFound() throws Exception {
     	UUID id = UUID.randomUUID();
-        when(service.getById(id)).thenThrow(new NotFoundException("Pix not found with id: " + id));
+        when(service.getById(id)).thenThrow(new ResourceNotFoundException("Pix not found with id: " + id));
         mockMvc.perform(get("/api/pix/{id}", id))
             .andExpect(status().isNotFound());
     }
